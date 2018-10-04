@@ -38,6 +38,7 @@ enum chimera_ergo_layers
 #define WIN_D LWIN(KC_D)
 #define WIN_L LWIN(KC_L)
 #define WIN_X LWIN(KC_X)
+// #define ALT_TAB LALT(KC_TAB)
 
 // #define TAPPING_TERM 200
 // #define TAPPING_TOGGLE 2
@@ -52,26 +53,26 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_QWERTY] = LAYOUT(
     KC_ESC,     KC_1,    KC_2,    KC_3,    KC_4,    KC_5,       KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    M_BSDEL,
-    KC_TAB,     KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,       KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_F5,
+    KC_TAB,     KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,       KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_QUOT,
     KC_LSFT,    KC_A,    KC_S,    KC_D,    KC_F,    KC_G,       KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_ENT,
     KC_LCTL,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,       KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_LALT,
-                                        TT_SYMB, M_SPUND,       M_SPIND, TT_NAV
+                                        M_SPUND, TT_SYMB,       M_SPIND, TT_NAV
   ),
 
   [_SYMBOLS] = LAYOUT(
     _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,       TG_NUM,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,
-    _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_LBRC,       KC_RBRC, KC_UNDS, KC_PLUS, KC_PIPE, KC_TILD, _______,
+    _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_LBRC,       KC_RBRC, KC_UNDS, KC_PLUS, KC_PIPE, KC_TILD, SC_CAD,
     _______, KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_LCBR,       KC_RCBR, KC_MINS, KC_EQL,  KC_BSLS, KC_GRV,  _______,
     _______, KC_F9,   KC_F10,  KC_F11,  KC_F12,  KC_LABK,       KC_RABK, KC_QUOT, KC_DQT,  XXXXXXX, XXXXXXX, _______,
-                                        TO_BASE, _______,       _______, TO_NAV
+                                        KC_LALT, TO_BASE,       _______, TO_NAV
   ),
 
   [_NAV] = LAYOUT(
     _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,       TG_NUM,  KC_INS,  KC_HOME, KC_PGUP, XXXXXXX, _______,
-    _______, KC_PSCR, WIN_D,   WIN_X,   WIN_L,   KC_CAPS,       XXXXXXX, KC_DEL,  KC_END,  KC_PGDN, XXXXXXX, SC_CAD,
+    _______, KC_PSCR, WIN_D,   WIN_X,   WIN_L,   KC_CAPS,       XXXXXXX, KC_DEL,  KC_END,  KC_PGDN, XXXXXXX, KC_F5,
     _______, XXXXXXX, XXXXXXX, XXXXXXX, KC_LWIN, KC_NLCK,       XXXXXXX, XXXXXXX, KC_UP,   XXXXXXX, XXXXXXX, _______,
     _______, XXXXXXX, XXXXXXX, XXXXXXX, KC_MYCM, KC_SLCK,       XXXXXXX, KC_LEFT, KC_DOWN, KC_RGHT, XXXXXXX, _______,
-                                        TO_SYMB, _______,       _______, TO_BASE
+                                        _______, TO_SYMB,       _______, TO_BASE
   ),
 
   [_NUMPAD] = LAYOUT(
@@ -79,7 +80,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______, XXXXXXX, XXXXXXX, XXXXXXX, TO_BASE, XXXXXXX,       KC_PEQL, KC_P4,   KC_P5,   KC_P6,   KC_PAST, TO_BASE,
     _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,       KC_UNDS, KC_P1,   KC_P2,   KC_P3,   KC_PMNS, _______,
     _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,       KC_PERC, KC_P0,   KC_PCMM, KC_PDOT, KC_PPLS, _______,
-                                        TO_SYMB, _______,       _______, TO_NAV
+                                        _______, TO_SYMB,       _______, TO_NAV
   ),
 
 };
@@ -112,7 +113,9 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
       else {
         if (m_bsdel_was_shifted) {
           unregister_code(KC_DEL);
-          register_code(KC_LSFT);
+          if (keyboard_report->mods & MOD_BIT(KC_LSFT)) {
+            register_code(KC_LSFT);
+          }
         }
         else {
           unregister_code(KC_BSPACE);
@@ -136,7 +139,9 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
         if (m_spund_was_shifted) {
           unregister_code(KC_LBRACKET);
           unregister_code(KC_LCTRL);
-          register_code(KC_LSFT);
+          if (keyboard_report->mods & MOD_BIT(KC_LSFT)) {
+            register_code(KC_LSFT);
+          }
         }
         else {
           unregister_code(KC_SPACE);
@@ -160,7 +165,9 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
         if (m_spind_was_shifted) {
           unregister_code(KC_RBRACKET);
           unregister_code(KC_LCTRL);
-          register_code(KC_LSFT);
+          if (keyboard_report->mods & MOD_BIT(KC_LSFT)) {
+            register_code(KC_LSFT);
+          }
         }
         else {
           unregister_code(KC_SPACE);

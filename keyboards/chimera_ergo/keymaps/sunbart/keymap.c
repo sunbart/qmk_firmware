@@ -1,12 +1,5 @@
-// this is the style you want to emulate.
-// This is the canonical layout file for the Quantum project. If you want to add another keyboard,
-
 #include QMK_KEYBOARD_H
 
-// Each layer gets a name for readability, which is then used in the keymap matrix below.
-// The underscores don't mean anything - you can have a layer called STUFF or any other name.
-// Layer names don't all need to be of the same length, obviously, and you can also skip them
-// entirely and just use numbers.
 enum chimera_ergo_layers
 {
   _QWERTY,  // normal
@@ -90,6 +83,7 @@ static bool m_bsdel_was_shifted = false;
 static bool m_spund_was_shifted = false;
 static bool m_spind_was_shifted = false;
 
+// Macros and stuff
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch(keycode) {
     case M_SHIFT: // Track the actual state of the Shift key
@@ -182,9 +176,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   return true;
 };
 
+// Switch LED color according to the current layer
 void matrix_scan_user(void) {
   uint8_t layer = biton32(layer_state);
-
   switch (layer) {
     case _QWERTY:
       set_led_blue;

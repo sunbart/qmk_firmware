@@ -34,6 +34,8 @@ enum custom_keycodes {
 #define WIN_L LWIN(KC_L)
 #define WIN_X LWIN(KC_X)
 #define WIN_R LWIN(KC_R)
+#define UNDENT LCTL(KC_LBRC)
+#define INDENT LCTL(KC_RBRC)
 
 #define LONGPRESS_DELAY 150
 
@@ -48,7 +50,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TAB,     KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,       KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_QUOT,
     M_SHIFT,    KC_A,    KC_S,    KC_D,    KC_F,    KC_G,       KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_ENT,
     KC_LCTL,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,       KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_LALT,
-                                        M_SPUND, TT_SYMB,       M_SPIND, TT_NAV
+                                         KC_SPC, TT_SYMB,       KC_SPC, TT_NAV
   ),
 
   [_SYMBOLS] = LAYOUT(
@@ -62,7 +64,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_NAV] = LAYOUT(
     _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,       TG_NUM,  KC_INS,  KC_HOME, KC_PGUP, XXXXXXX, _______,
     _______, KC_PSCR, WIN_D,   WIN_X,   WIN_L,   KC_CAPS,       XXXXXXX, KC_DEL,  KC_END,  KC_PGDN, XXXXXXX, KC_F5,
-    _______, XXXXXXX, XXXXXXX, WIN_R,   KC_LWIN, KC_NLCK,       XXXXXXX, XXXXXXX, KC_UP,   XXXXXXX, XXXXXXX, _______,
+    _______, XXXXXXX, XXXXXXX, WIN_R,   KC_LWIN, KC_NLCK,       XXXXXXX, UNDENT,  KC_UP,   INDENT,  XXXXXXX, _______,
     _______, XXXXXXX, XXXXXXX, XXXXXXX, KC_MYCM, KC_SLCK,       XXXXXXX, KC_LEFT, KC_DOWN, KC_RGHT, XXXXXXX, _______,
                                         _______, TO_SYMB,       _______, TO_BASE
   ),
@@ -80,8 +82,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 // Tracking vars for macros
 static bool m_shift_status = false;
 static bool m_bsdel_was_shifted = false;
-static bool m_spund_was_shifted = false;
-static bool m_spind_was_shifted = false;
 
 // Macros and stuff
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -117,58 +117,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
         else {
           unregister_code(KC_BSPACE);
-        }
-      }
-      return false;
-    case M_SPUND: // Send Space or CTRL+[ if shifted (unindent in Sublime)
-      if (record->event.pressed) {
-        if (keyboard_report->mods & MOD_BIT(KC_LSFT)) {
-          m_spund_was_shifted = true;
-          unregister_code(KC_LSFT);
-          register_code(KC_LCTRL);
-          register_code(KC_LBRACKET);
-        }
-        else {
-          m_spund_was_shifted = false;
-          register_code(KC_SPACE);
-        }
-      }
-      else {
-        if (m_spund_was_shifted) {
-          unregister_code(KC_LBRACKET);
-          unregister_code(KC_LCTRL);
-          if (m_shift_status) {
-            register_code(KC_LSFT);
-          }
-        }
-        else {
-          unregister_code(KC_SPACE);
-        }
-      }
-      return false;
-    case M_SPIND: // Send Space or CTRL+] if shifted (indent in Sublime)
-      if (record->event.pressed) {
-        if (keyboard_report->mods & MOD_BIT(KC_LSFT)) {
-          m_spind_was_shifted = true;
-          unregister_code(KC_LSFT);
-          register_code(KC_LCTRL);
-          register_code(KC_RBRACKET);
-        }
-        else {
-          m_spind_was_shifted = false;
-          register_code(KC_SPACE);
-        }
-      }
-      else {
-        if (m_spind_was_shifted) {
-          unregister_code(KC_RBRACKET);
-          unregister_code(KC_LCTRL);
-          if (m_shift_status) {
-            register_code(KC_LSFT);
-          }
-        }
-        else {
-          unregister_code(KC_SPACE);
         }
       }
       return false;

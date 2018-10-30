@@ -23,9 +23,8 @@ enum chimera_ergo_layers
 // Macro enum
 enum custom_keycodes {
   M_BSDEL = SAFE_RANGE,
-  M_SPUND,
-  M_SPIND,
-  M_SHIFT
+  M_SHIFT,
+  M_FOLD
 };
 
 // Keycode defines
@@ -47,8 +46,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_QWERTY] = LAYOUT(
     KC_ESC,     KC_1,    KC_2,    KC_3,    KC_4,    KC_5,       KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    M_BSDEL,
-    KC_TAB,     KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,       KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_QUOT,
-    M_SHIFT,    KC_A,    KC_S,    KC_D,    KC_F,    KC_G,       KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_ENT,
+    KC_TAB,     KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,       KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_ENT,
+    M_SHIFT,    KC_A,    KC_S,    KC_D,    KC_F,    KC_G,       KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
     KC_LCTL,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,       KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_LALT,
                                          KC_SPC, TT_SYMB,       KC_SPC, TT_NAV
   ),
@@ -63,16 +62,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_NAV] = LAYOUT(
     _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,       TG_NUM,  KC_INS,  KC_HOME, KC_PGUP, XXXXXXX, _______,
-    _______, KC_PSCR, WIN_D,   WIN_X,   WIN_L,   KC_CAPS,       XXXXXXX, KC_DEL,  KC_END,  KC_PGDN, XXXXXXX, KC_F5,
-    _______, XXXXXXX, XXXXXXX, WIN_R,   KC_LWIN, KC_NLCK,       XXXXXXX, UNDENT,  KC_UP,   INDENT,  XXXXXXX, _______,
-    _______, XXXXXXX, XXXXXXX, XXXXXXX, KC_MYCM, KC_SLCK,       XXXXXXX, KC_LEFT, KC_DOWN, KC_RGHT, XXXXXXX, _______,
+    _______, KC_PSCR, WIN_D,   WIN_X,   WIN_L,   KC_CAPS,       XXXXXXX, KC_DEL,  KC_END,  KC_PGDN, XXXXXXX, _______,
+    _______, XXXXXXX, XXXXXXX, WIN_R,   KC_LWIN, KC_NLCK,       XXXXXXX, UNDENT,  KC_UP,   INDENT,  XXXXXXX, KC_F5,
+    _______, XXXXXXX, XXXXXXX, XXXXXXX, KC_MYCM, KC_SLCK,       M_FOLD,  KC_LEFT, KC_DOWN, KC_RGHT, XXXXXXX, _______,
                                         _______, TO_SYMB,       _______, TO_BASE
   ),
 
   [_NUMPAD] = LAYOUT(
     _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,       TG_NUM,  KC_P7,   KC_P8,   KC_P9,   KC_PSLS, _______,
-    _______, XXXXXXX, XXXXXXX, XXXXXXX, TO_BASE, XXXXXXX,       KC_PEQL, KC_P4,   KC_P5,   KC_P6,   KC_PAST, TO_BASE,
-    _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,       KC_UNDS, KC_P1,   KC_P2,   KC_P3,   KC_PMNS, _______,
+    _______, XXXXXXX, XXXXXXX, XXXXXXX, TO_BASE, XXXXXXX,       KC_PEQL, KC_P4,   KC_P5,   KC_P6,   KC_PAST, _______,
+    _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,       KC_UNDS, KC_P1,   KC_P2,   KC_P3,   KC_PMNS, TO_BASE,
     KC_RCTL, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,       KC_PERC, KC_P0,   KC_PCMM, KC_PDOT, KC_PPLS, _______,
                                         _______, TO_SYMB,       _______, TO_NAV
   ),
@@ -118,6 +117,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         else {
           unregister_code(KC_BSPACE);
         }
+      }
+      return false;
+    case M_FOLD:
+      if (record->event.pressed) {
+        SEND_STRING(SS_LCTRL("ko"));
       }
       return false;
   }

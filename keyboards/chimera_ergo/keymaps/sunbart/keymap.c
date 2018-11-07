@@ -24,7 +24,9 @@ enum chimera_ergo_layers
 enum custom_keycodes {
   M_BSDEL = SAFE_RANGE,
   M_SHIFT,
-  M_FOLD
+  M_FOLD,
+  M_RMUP,
+  M_RMDWN
 };
 
 // Keycode defines
@@ -63,8 +65,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_NAV] = LAYOUT(
     _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,       TG_NUM,  KC_INS,  KC_HOME, KC_PGUP, XXXXXXX, _______,
     _______, KC_PSCR, WIN_D,   WIN_X,   WIN_L,   KC_CAPS,       XXXXXXX, KC_DEL,  KC_END,  KC_PGDN, XXXXXXX, _______,
-    _______, KC_A,    KC_S,    WIN_R,   KC_LWIN, KC_NLCK,       XXXXXXX, UNDENT,  KC_UP,   INDENT,  XXXXXXX, KC_F5,
-    _______, KC_Z,    KC_X,    KC_C,    KC_V,    KC_SLCK,       M_FOLD,  KC_LEFT, KC_DOWN, KC_RGHT, XXXXXXX, _______,
+    _______, KC_A,    KC_S,    WIN_R,   KC_LWIN, KC_NLCK,       XXXXXXX, UNDENT,  KC_UP,   INDENT,  M_RMUP,  KC_F5,
+    _______, KC_Z,    KC_X,    KC_C,    KC_V,    KC_SLCK,       M_FOLD,  KC_LEFT, KC_DOWN, KC_RGHT, M_RMDWN, _______,
                                         _______, TO_SYMB,       _______, TO_BASE
   ),
 
@@ -122,6 +124,26 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case M_FOLD:
       if (record->event.pressed) {
         SEND_STRING(SS_LCTRL("ko"));
+      }
+      return false;
+    case M_RMUP:
+      if (record->event.pressed) {
+        register_code(KC_MS_BTN2);
+        register_code(KC_MS_WH_UP);
+      }
+      else {
+        unregister_code(KC_MS_WH_UP);
+        unregister_code(KC_MS_BTN2);
+      }
+      return false;
+    case M_RMDWN:
+      if (record->event.pressed) {
+        register_code(KC_MS_BTN2);
+        register_code(KC_MS_WH_DOWN);
+      }
+      else {
+        unregister_code(KC_MS_WH_DOWN);
+        unregister_code(KC_MS_BTN2);
       }
       return false;
   }

@@ -2,7 +2,7 @@
 
 enum chimera_ergo_layers
 {
-  _QWERTY,  // normal
+  _QWERTY,  // blue
   _SYMBOLS, // green
   _NAV,     // yellow
   _NUMPAD   // red
@@ -45,7 +45,6 @@ enum custom_keycodes {
 #define XXXXXXX KC_NO
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-
   [_QWERTY] = LAYOUT(
     KC_ESC,     KC_1,    KC_2,    KC_3,    KC_4,    KC_5,       KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    M_BSDEL,
     KC_TAB,     KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,       KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_ENT,
@@ -55,10 +54,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 
   [_SYMBOLS] = LAYOUT(
-    _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, SC_CAD,        TG_NUM,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,
+    _______, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,       KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, _______,
     _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_LBRC,       KC_RBRC, KC_UNDS, KC_PLUS, KC_PIPE, KC_COLN, _______,
     _______, KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_LCBR,       KC_RCBR, KC_MINS, KC_EQL,  KC_BSLS, KC_SCLN, _______,
-    _______, KC_F9,   KC_F10,  KC_F11,  KC_F12,  KC_LABK,       KC_RABK, KC_QUOT, KC_DQT,  KC_GRV,  KC_TILD, _______,
+    _______, KC_F9,   KC_F10,  KC_F11,  KC_F12,  SC_CAD,        TG_NUM,  KC_QUOT, KC_LABK, KC_RABK, KC_GRV,  _______,
                                         KC_LALT, TO_BASE,       _______, TO_NAV
   ),
 
@@ -77,7 +76,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_RCTL, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,       KC_PERC, KC_P0,   KC_PCMM, KC_PDOT, KC_PPLS, _______,
                                         _______, TO_SYMB,       _______, TO_NAV
   ),
-
 };
 
 // Tracking vars for macros

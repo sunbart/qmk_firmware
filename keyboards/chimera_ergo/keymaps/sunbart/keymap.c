@@ -37,7 +37,9 @@ enum custom_keycodes {
   M_FOLD2, // Sublime 3 Fold indent level 2
   M_FOLD3, // Sublime 3 Fold indent level 3
   M_FOLD4, // Sublime 3 Fold indent level 4
-  M_UFALL // Sublime 3 Unfold All
+  M_UFALL, // Sublime 3 Unfold All
+  M_SIDBR, // Sublime 3 toggle Side Bar
+  M_COLSW // Sublime 3 toggle editor column count
 };
 
 // Keycode defines
@@ -69,8 +71,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 
   [NAV] = LAYOUT(
-    _______, M_FOLD1, M_FOLD2, M_FOLD3, M_FOLD4, M_UFALL,       TG_NUM,  KC_INS,  KC_HOME, KC_PGUP, XXXXXXX, _______,
-    _______, KC_PSCR, WIN_D,   WIN_X,   WIN_L,   KC_CAPS,       LINEUP,  KC_DEL,  KC_END,  KC_PGDN, XXXXXXX, _______,
+    _______, M_FOLD1, M_FOLD2, M_FOLD3, M_FOLD4, M_UFALL,       TG_NUM,  KC_INS,  KC_HOME, KC_PGUP, M_COLSW, _______,
+    _______, KC_PSCR, WIN_D,   WIN_X,   WIN_L,   KC_CAPS,       LINEUP,  KC_DEL,  KC_END,  KC_PGDN, M_SIDBR, _______,
     _______, KC_A,    KC_S,    WIN_R,   KC_LWIN, KC_NLCK,       LINEDWN, UNDENT,  KC_UP,   INDENT,  M_RMUP,  KC_F5,
     _______, KC_Z,    KC_X,    KC_C,    KC_V,    KC_SLCK,       M_FUFLD, KC_LEFT, KC_DOWN, KC_RGHT, M_RMDWN, _______,
                                         _______, TO_SYMB,       _______, TO_BASE
@@ -88,6 +90,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 // Tracking vars for macros
 static bool m_shift_status = false;
 static bool m_bsdel_was_shifted = false;
+static bool m_colsw_state = false;
 
 // Macros and stuff
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -189,6 +192,24 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case M_UFALL:
       if (record->event.pressed) {
         SEND_STRING(SS_LCTRL("kj"));
+      }
+      return false;
+    // Sublime 3 toggle Side Bar
+    case M_SIDBR:
+      if (record->event.pressed) {
+        SEND_STRING(SS_LCTRL("kb"));
+      }
+      return false;
+    // Sublime 3 toggle editor column count
+    case M_COLSW:
+      if (record->event.pressed) {
+        if (m_colsw_state) {
+          SEND_STRING(SS_LSFT(SS_LALT("1")));
+        }
+        else {
+          SEND_STRING(SS_LSFT(SS_LALT("2")));
+        }
+        m_colsw_state = !m_colsw_state;
       }
       return false;
   }

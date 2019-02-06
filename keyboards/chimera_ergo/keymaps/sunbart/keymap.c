@@ -24,7 +24,7 @@ enum chimera_ergo_layers
 enum custom_keycodes {
   M_BSDEL = SAFE_RANGE,
   M_SHIFT,
-  M_FOLD,
+  M_FUFLD,
   M_RMUP,
   M_RMDWN
 };
@@ -67,7 +67,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,       TG_NUM,  KC_INS,  KC_HOME, KC_PGUP, XXXXXXX, _______,
     _______, KC_PSCR, WIN_D,   WIN_X,   WIN_L,   KC_CAPS,       LINEUP,  KC_DEL,  KC_END,  KC_PGDN, XXXXXXX, _______,
     _______, KC_A,    KC_S,    WIN_R,   KC_LWIN, KC_NLCK,       LINEDWN, UNDENT,  KC_UP,   INDENT,  M_RMUP,  KC_F5,
-    _______, KC_Z,    KC_X,    KC_C,    KC_V,    KC_SLCK,       M_FOLD,  KC_LEFT, KC_DOWN, KC_RGHT, M_RMDWN, _______,
+    _______, KC_Z,    KC_X,    KC_C,    KC_V,    KC_SLCK,       M_FUFLD, KC_LEFT, KC_DOWN, KC_RGHT, M_RMDWN, _______,
                                         _______, TO_SYMB,       _______, TO_BASE
   ),
 
@@ -121,12 +121,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
       }
       return false;
-    case M_FOLD:
+    case M_FUFLD: // Sublime 3 Fold/Unfold (no shift/shift)
       if (record->event.pressed) {
-        SEND_STRING(SS_LCTRL("ko"));
+        if (m_shift_status == false) {
+            SEND_STRING(SS_LCTRL("{"));
+        }
+        else {
+            SEND_STRING(SS_LCTRL("}"));
+        }
       }
       return false;
-    case M_RMUP:
+    case M_RMUP: // Sublime 3 switch to tab to the left
       if (record->event.pressed) {
         register_code(KC_MS_BTN2);
         register_code(KC_MS_WH_UP);
@@ -136,7 +141,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         unregister_code(KC_MS_BTN2);
       }
       return false;
-    case M_RMDWN:
+    case M_RMDWN: // Sublime 3 switch to tab to the right
       if (record->event.pressed) {
         register_code(KC_MS_BTN2);
         register_code(KC_MS_WH_DOWN);

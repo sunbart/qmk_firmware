@@ -63,7 +63,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 
   [SYMBOLS] = LAYOUT(
-    _______, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,       KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, _______,
+    _______, M_FOLD1, M_FOLD2, M_FOLD3, M_FOLD4, M_UFALL,       KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, _______,
     _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_LBRC,       KC_RBRC, KC_UNDS, KC_PLUS, KC_PIPE, KC_COLN, _______,
     _______, KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_LCBR,       KC_RCBR, KC_MINS, KC_EQL,  KC_BSLS, KC_SCLN, _______,
     _______, KC_F9,   KC_F10,  KC_F11,  KC_F12,  SC_CAD,        TG_NUM,  KC_QUOT, KC_LABK, KC_RABK, KC_GRV,  _______,
@@ -71,7 +71,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 
   [NAV] = LAYOUT(
-    _______, M_FOLD1, M_FOLD2, M_FOLD3, M_FOLD4, M_UFALL,       TG_NUM,  KC_INS,  KC_HOME, KC_PGUP, M_COLSW, _______,
+    _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,       TG_NUM,  KC_INS,  KC_HOME, KC_PGUP, M_COLSW, _______,
     _______, KC_PSCR, WIN_D,   WIN_X,   WIN_L,   KC_CAPS,       LINEUP,  KC_DEL,  KC_END,  KC_PGDN, M_SIDBR, _______,
     _______, KC_A,    KC_S,    WIN_R,   KC_LWIN, KC_NLCK,       LINEDWN, UNDENT,  KC_UP,   INDENT,  M_RMUP,  KC_F5,
     _______, KC_Z,    KC_X,    KC_C,    KC_V,    KC_SLCK,       M_FUFLD, KC_LEFT, KC_DOWN, KC_RGHT, M_RMDWN, _______,

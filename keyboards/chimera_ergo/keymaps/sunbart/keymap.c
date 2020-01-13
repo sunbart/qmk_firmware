@@ -28,8 +28,8 @@ enum chimera_ergo_layers
 
 // Macro enum
 enum custom_keycodes {
-  M_BSDEL = SAFE_RANGE, // Track the actual state of the Shift key
-  M_SHIFT, // Send Backspace or Delete if shifted
+  M_SHIFT = SAFE_RANGE, // Track the actual state of the Shift key
+  M_BSDEL, // Send Backspace or Delete if shifted
   M_FUFLD, // Sublime 3 Fold/Unfold (no shift/shift)
   M_RMUP, // Sublime 3 switch to tab to the left
   M_RMDWN, // Sublime 3 switch to tab to the right
@@ -39,7 +39,8 @@ enum custom_keycodes {
   M_FOLD4, // Sublime 3 Fold indent level 4
   M_UFALL, // Sublime 3 Unfold All
   M_SIDBR, // Sublime 3 toggle Side Bar
-  M_COLSW // Sublime 3 toggle editor column count
+  M_COLSW, // Sublime 3 toggle editor column count
+  M_SNIP // Win10 Snip & Sketch shortcut
 };
 
 // Keycode defines
@@ -51,15 +52,15 @@ enum custom_keycodes {
 #define UNDENT LCTL(KC_LBRC) // Sublime 3 Unindent selection
 #define INDENT LCTL(KC_RBRC) // Sublime 3 Indent selection
 #define LINEUP LCTL(LSFT(KC_UP)) // Sublime 3 Move selection Up
-#define LINEDWN LCTL(LSFT(KC_DOWN)) // Sublime 3 Moce selection Down
+#define LINEDWN LCTL(LSFT(KC_DOWN)) // Sublime 3 Move selection Down
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [QWERTY] = LAYOUT(
-    KC_ESC,     KC_1,    KC_2,    KC_3,    KC_4,    KC_5,       KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    M_BSDEL,
-    KC_TAB,     KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,       KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_ENT,
-    M_SHIFT,    KC_A,    KC_S,    KC_D,    KC_F,    KC_G,       KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
-    KC_LCTL,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,       KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_LALT,
-                                         KC_SPC, TT_SYMB,       KC_SPC, TT_NAV
+    KC_ESC,   KC_1,    KC_2,    KC_3,    KC_4,   KC_5,          KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    M_BSDEL,
+    KC_TAB,   KC_Q,    KC_W,    KC_E,    KC_R,   KC_T,          KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_ENT,
+    M_SHIFT,  KC_A,    KC_S,    KC_D,    KC_F,   KC_G,          KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
+    KC_LCTL,  KC_Z,    KC_X,    KC_C,    KC_V,   KC_B,          KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_LALT,
+                                         KC_SPC, TT_SYMB,       KC_SPC,  TT_NAV
   ),
 
   [SYMBOLS] = LAYOUT(
@@ -71,7 +72,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 
   [NAV] = LAYOUT(
-    _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,       TG_NUM,  KC_INS,  KC_HOME, KC_PGUP, M_COLSW, _______,
+    _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, M_SNIP,        TG_NUM,  KC_INS,  KC_HOME, KC_PGUP, M_COLSW, _______,
     _______, KC_PSCR, WIN_D,   WIN_X,   WIN_L,   KC_CAPS,       LINEUP,  KC_DEL,  KC_END,  KC_PGDN, M_SIDBR, _______,
     _______, KC_A,    KC_S,    WIN_R,   KC_LWIN, KC_NLCK,       LINEDWN, UNDENT,  KC_UP,   INDENT,  M_RMUP,  KC_F5,
     _______, KC_Z,    KC_X,    KC_C,    KC_V,    KC_SLCK,       M_FUFLD, KC_LEFT, KC_DOWN, KC_RGHT, M_RMDWN, _______,
@@ -210,6 +211,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           SEND_STRING(SS_LSFT(SS_LALT("2")));
         }
         m_colsw_state = !m_colsw_state;
+      }
+      return false;
+    // Win10 Snip & Sketch shortcut
+    case M_SNIP:
+      if (record->event.pressed) {
+        SEND_STRING(SS_LSFT(SS_LGUI("s")));
       }
       return false;
   }
